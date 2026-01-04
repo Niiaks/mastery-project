@@ -5,7 +5,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"mastery-project/internal/model"
 	"mastery-project/internal/repository"
 
@@ -53,7 +52,7 @@ func (auth *AuthService) Login(ctx context.Context, request model.LoginRequest) 
 		Email: user.Email,
 		Name:  user.Name,
 	}
-	fmt.Println("the value is", value)
+
 	return response, value, nil
 
 }
