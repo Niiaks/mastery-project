@@ -2,8 +2,8 @@ package handler
 
 import (
 	"encoding/json"
+	"mastery-project/internal/config"
 	"mastery-project/internal/model"
-	"mastery-project/internal/server"
 	"mastery-project/internal/service"
 	"net/http"
 
@@ -17,9 +17,9 @@ type AuthHandler struct {
 	AuthService *service.AuthService
 }
 
-func NewAuthHandler(srv *server.Server, auth *service.AuthService) *AuthHandler {
+func NewAuthHandler(cfg *config.Config, auth *service.AuthService) *AuthHandler {
 	return &AuthHandler{
-		Handler:     NewHandler(srv),
+		Handler:     NewHandler(cfg.ENV),
 		AuthService: auth,
 	}
 }
@@ -48,7 +48,7 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		Path:     "/",
 		SameSite: http.SameSiteLaxMode, //mitigate against csrf attacks
 		HttpOnly: true,
-		Secure:   h.Handler.server.Config.ENV == "production",
+		Secure:   h.env == "production",
 	}
 	http.SetCookie(w, cookie)
 

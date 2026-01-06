@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"mastery-project/internal/server"
+	"mastery-project/internal/config"
 	"mastery-project/internal/service"
 )
 
@@ -11,10 +11,10 @@ type Handlers struct {
 	Item   *ItemHandler
 }
 
-func NewHandlers(srv *server.Server, service *service.Services) *Handlers {
+func NewHandlers(cfg *config.Config, service *service.Services) *Handlers {
 	return &Handlers{
-		Health: NewHealthHandler(srv),
-		Auth:   NewAuthHandler(srv, service.Auth),
-		Item:   NewItemHandler(srv, service.Item),
+		Health: NewHealthHandler(cfg),
+		Auth:   NewAuthHandler(cfg, service.Auth),
+		Item:   NewItemHandler(cfg, service.Item),
 	}
 }

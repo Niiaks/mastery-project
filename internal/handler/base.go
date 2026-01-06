@@ -2,17 +2,16 @@ package handler
 
 import (
 	"encoding/json"
-	"mastery-project/internal/server"
 	"net/http"
 )
 
 type Handler struct {
-	server *server.Server
+	env string
 }
 
 // NewHandler creates a new base handler
-func NewHandler(s *server.Server) Handler {
-	return Handler{server: s}
+func NewHandler(env string) Handler {
+	return Handler{env: env}
 }
 
 func (h Handler) JSON(w http.ResponseWriter, code int, payload interface{}) {

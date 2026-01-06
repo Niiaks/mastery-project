@@ -5,8 +5,8 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"io"
+	"mastery-project/internal/config"
 	"mastery-project/internal/model"
-	"mastery-project/internal/server"
 	"mastery-project/internal/service"
 	"mime/multipart"
 	"net/http"
@@ -22,9 +22,9 @@ type ItemHandler struct {
 	ItemService *service.ItemService
 }
 
-func NewItemHandler(srv *server.Server, itemService *service.ItemService) *ItemHandler {
+func NewItemHandler(cfg *config.Config, itemService *service.ItemService) *ItemHandler {
 	return &ItemHandler{
-		Handler:     NewHandler(srv),
+		Handler:     NewHandler(cfg.ENV),
 		ItemService: itemService}
 }
 

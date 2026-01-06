@@ -43,7 +43,7 @@ func main() {
 		panic(serviceErr)
 	}
 	//setup handlers
-	handlers := handler.NewHandlers(srv, services)
+	handlers := handler.NewHandlers(cfg, services)
 
 	authMW := middleware.NewAuthMiddleware(repos.Session)
 	r := router.NewRouter(handlers, authMW)
