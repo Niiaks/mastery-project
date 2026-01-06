@@ -15,6 +15,13 @@ type SessionRepository struct {
 	pool *pgxpool.Pool
 }
 
+type SessionRepo interface {
+	CreateSession(ctx context.Context, session *model.Session) error
+	DeleteSession(ctx context.Context, session *model.Session) error
+	GetSession(ctx context.Context, sessionID string) (string, error)
+	GetUserBySessionID(ctx context.Context, sessionID string) (*model.User, error)
+}
+
 func NewSessionRepository(pool *pgxpool.Pool) *SessionRepository {
 	return &SessionRepository{pool: pool}
 }

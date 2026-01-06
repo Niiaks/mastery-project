@@ -14,6 +14,13 @@ type UserRepository struct {
 	db *pgxpool.Pool
 }
 
+type UserRepo interface {
+	GetUserByID(ctx context.Context, id string) (*model.User, error)
+	GetUserByEmail(ctx context.Context, email string) (*model.User, error)
+	CreateUser(ctx context.Context, user *model.User) error
+	EmailExists(ctx context.Context, email string) (bool, error)
+}
+
 func NewUserRepository(db *pgxpool.Pool) *UserRepository {
 	return &UserRepository{db: db}
 }
