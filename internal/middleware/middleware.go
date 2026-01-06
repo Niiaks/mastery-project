@@ -18,6 +18,11 @@ func NewAuthMiddleware(sessionRepo *repository.SessionRepository) *AuthMiddlewar
 		Session: sessionRepo,
 	}
 }
+
+type contextKey string
+
+const userContextKey contextKey = "user"
+
 func (m *AuthMiddleware) Protected(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
@@ -54,7 +59,7 @@ func (m *AuthMiddleware) Protected(next http.Handler) http.Handler {
 		}
 
 		// attach user to context
-		ctx = context.WithValue(r.Context(), "user", user)
+		ctx = context.WithValue(r.Context(), userContextKey, user)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
