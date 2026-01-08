@@ -33,12 +33,12 @@ func RunMigrations(cfg *config.Config) error {
 
 	dbDSN := fmt.Sprintf(
 		"postgres://%s:%s@%s:%d/%s?sslmode=%s",
-		cfg.DBUser,
-		cfg.DBPass,
-		cfg.DBHost,
-		cfg.DBPort,
-		cfg.DBName,
-		cfg.SSLMode,
+		cfg.Database.DBUser,
+		cfg.Database.DBPass,
+		cfg.Database.DBHost,
+		cfg.Database.DBPort,
+		cfg.Database.DBName,
+		cfg.Database.SSLMode,
 	)
 
 	m, err := migrate.New(migrationsPath, dbDSN)

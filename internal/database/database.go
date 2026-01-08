@@ -45,16 +45,16 @@ func (mt *multiTracer) TraceQueryEnd(ctx context.Context, conn *pgx.Conn, data p
 }
 
 func New(cfg *config.Config) (*Database, error) {
-	hostPort := net.JoinHostPort(cfg.DBHost, strconv.Itoa(cfg.DBPort))
+	hostPort := net.JoinHostPort(cfg.Database.DBHost, strconv.Itoa(cfg.Database.DBPort))
 
-	encodedPassword := url.QueryEscape(cfg.DBPass)
+	encodedPassword := url.QueryEscape(cfg.Database.DBPass)
 
 	dsn := fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=%s",
-		cfg.DBUser,
+		cfg.Database.DBUser,
 		encodedPassword,
 		hostPort,
-		cfg.DBName,
-		cfg.SSLMode,
+		cfg.Database.DBName,
+		cfg.Database.SSLMode,
 	)
 
 	poolConfig, err := pgxpool.ParseConfig(dsn)
@@ -66,7 +66,7 @@ func New(cfg *config.Config) (*Database, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to database: %s", err)
 	}
-	
+
 	err2 := pool.Ping(context.Background())
 	if err2 != nil {
 		return nil, fmt.Errorf("failed to ping database: %s", err)

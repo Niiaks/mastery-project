@@ -8,14 +8,18 @@ import (
 )
 
 type Config struct {
+	Database Database
+	Server   Server
+	ENV      string
+}
+
+type Database struct {
 	DBName  string
 	DBPass  string
 	DBHost  string
 	SSLMode string
 	DBPort  int
 	DBUser  string
-	Server  Server
-	ENV     string
 }
 
 type Server struct {
@@ -28,13 +32,15 @@ type Server struct {
 func LoadConfig() (*Config, error) {
 	_ = godotenv.Load()
 	return &Config{
-		DBName:  GetEnv("DB_NAME", ""),
-		DBPass:  GetEnv("DB_PASS", ""),
-		DBHost:  GetEnv("DB_HOST", ""),
-		DBPort:  GetEnvInt("DB_PORT", 0),
-		SSLMode: GetEnv("SSL_MODE", "disable"),
-		DBUser:  GetEnv("DB_USER", ""),
-		ENV:     GetEnv("ENV", ""),
+		Database: Database{
+			DBName:  GetEnv("DB_NAME", ""),
+			DBPass:  GetEnv("DB_PASS", ""),
+			DBHost:  GetEnv("DB_HOST", ""),
+			DBPort:  GetEnvInt("DB_PORT", 0),
+			SSLMode: GetEnv("SSL_MODE", "disable"),
+			DBUser:  GetEnv("DB_USER", ""),
+		},
+		ENV: GetEnv("ENV", ""),
 		Server: Server{
 			Port:         GetEnv("SERVER_PORT", ""),
 			ReadTimeout:  GetEnvInt("READ_TIMEOUT", 0),
