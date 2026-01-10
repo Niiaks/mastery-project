@@ -1,4 +1,4 @@
-# Mastery Project
+# Item Api
 
 A simple Go CRUD API designed for deployment on a VPS.
 
@@ -34,8 +34,6 @@ mastery-project/
 │   ├── router/               # Route definitions
 │   ├── server/               # HTTP server setup
 │   └── service/              # Business logic
-├── uploads/                  # Uploaded files storage
-└── ui/                       # Frontend assets (if any)
 ```
 
 ## Features
@@ -193,83 +191,6 @@ CREATE TABLE sessions (
    ```
 
    Migrations will run automatically on startup.
-
-### Building for Production
-
-```bash
-go build -o bin/app cmd/mastery-project/main.go
-```
-
-## VPS Deployment
-
-### 1. Build the Binary
-
-```bash
-GOOS=linux GOARCH=amd64 go build -o bin/app cmd/mastery-project/main.go
-```
-
-### 2. Transfer to VPS
-
-```bash
-scp bin/app user@your-vps:/path/to/app/
-scp .env user@your-vps:/path/to/app/
-```
-
-### 3. Create Systemd Service (Optional)
-
-Create `/etc/systemd/system/mastery-project.service`:
-
-```ini
-[Unit]
-Description=Mastery Project API
-After=network.target postgresql.service
-
-[Service]
-Type=simple
-User=www-data
-WorkingDirectory=/path/to/app
-ExecStart=/path/to/app/app
-Restart=always
-RestartSec=5
-Environment=ENV=production
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Enable and start the service:
-
-```bash
-sudo systemctl enable mastery-project
-sudo systemctl start mastery-project
-```
-
-### 4. Reverse Proxy with Nginx (Recommended)
-
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    location / {
-        proxy_pass http://localhost:8080;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_cache_bypass $http_upgrade;
-    }
-
-    location /uploads {
-        alias /path/to/app/uploads;
-        expires 30d;
-        add_header Cache-Control "public, immutable";
-    }
-}
-```
 
 ## API Usage Examples
 
