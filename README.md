@@ -1,4 +1,4 @@
-# Mastery Project
+# Item Api
 
 A simple Go CRUD API designed for deployment on a VPS.
 
